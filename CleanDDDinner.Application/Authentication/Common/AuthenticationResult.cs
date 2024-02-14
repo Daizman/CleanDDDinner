@@ -1,6 +1,6 @@
 ﻿using CleanDDDinner.Domain.Entities;
 
-namespace CleanDDDinner.Application.Services.Authentication;
+namespace CleanDDDinner.Application.Authentication.Common;
 
 public record AuthenticationResult(
     User User,

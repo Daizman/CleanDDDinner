@@ -1,5 +1,7 @@
-﻿using CleanDDDinner.Application.Services.Authentication;
+﻿using CleanDDDinner.Application.Authentication.Commands.Register;
+using CleanDDDinner.Application.Authentication.Queries.Login;
 using CleanDDDinner.Contracts.Authentication;
+using MediatR;
 
 namespace CleanDDDinner.Api.Endpoints;
 
@@ -9,12 +11,13 @@ public static class AuthenticationEndpoints
     {
         var authenticationApi = app.MapGroup("/api/auth");
 
-        authenticationApi.MapPost("/register", (
-            IAuthenticationService authService, 
+        authenticationApi.MapPost("/register", async (
+            ISender sender,
             RegisterRequest request
             ) =>
         {
-            var result = authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+            RegisterCommand command = new(request.FirstName, request.LastName, request.Email, request.Password);
+            var result = await sender.Send(command);
             AuthenticationResponse response = new(
                 result.User.Id, 
                 result.User.FirstName, 
@@ -25,14 +28,15 @@ public static class AuthenticationEndpoints
             return Results.Ok(response);
         });
         
-        authenticationApi.MapPost("/login", (
-            IAuthenticationService authService, 
+        authenticationApi.MapPost("/login", async (
+            ISender sender, 
             LoginRequest request) =>
         {
-            var result = authService.Login(request.Email, request.Password);
+            LoginQuery query = new(request.Email, request.Password);
+            var result = await sender.Send(query);
             AuthenticationResponse response = new(
                 result.User.Id,
-                result.User.FirstName, 
+                result.User.FirstName,
                 result.User.LastName, 
                 result.User.Email, 
                 result.Token
