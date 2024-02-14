@@ -27,7 +27,7 @@ public static class ErrorEndpoints
                     Title = msg,
                     Extensions = new Dictionary<string, object?>
                     {
-                        { "customProperty", "customValue" }
+                        { "inner", exception?.InnerException }
                     }
                 }
             };
