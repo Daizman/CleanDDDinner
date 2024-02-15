@@ -1,3 +1,4 @@
+using CleanDDDinner.Api;
 using CleanDDDinner.Api.Endpoints;
 using CleanDDDinner.Application;
 using CleanDDDinner.Infrastructure;
@@ -7,9 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration)
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen()
-    .AddProblemDetails();
+    .AddPresentation();
 
 var app = builder.Build();
 

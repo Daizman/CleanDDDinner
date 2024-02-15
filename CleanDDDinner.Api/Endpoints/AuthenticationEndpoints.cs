@@ -1,4 +1,5 @@
-﻿using CleanDDDinner.Application.Authentication.Commands.Register;
+﻿using AutoMapper;
+using CleanDDDinner.Application.Authentication.Commands.Register;
 using CleanDDDinner.Application.Authentication.Queries.Login;
 using CleanDDDinner.Contracts.Authentication;
 using MediatR;
@@ -13,34 +14,24 @@ public static class AuthenticationEndpoints
 
         authenticationApi.MapPost("/register", async (
             ISender sender,
+            IMapper mapper,
             RegisterRequest request
             ) =>
         {
-            RegisterCommand command = new(request.FirstName, request.LastName, request.Email, request.Password);
+            var command = mapper.Map<RegisterCommand>(request);
             var result = await sender.Send(command);
-            AuthenticationResponse response = new(
-                result.User.Id, 
-                result.User.FirstName, 
-                result.User.LastName, 
-                result.User.Email, 
-                result.Token
-            );
+            var response = mapper.Map<AuthenticationResponse>(result);
             return Results.Ok(response);
         });
         
         authenticationApi.MapPost("/login", async (
             ISender sender, 
+            IMapper mapper,
             LoginRequest request) =>
         {
-            LoginQuery query = new(request.Email, request.Password);
+            var query = mapper.Map<LoginQuery>(request);
             var result = await sender.Send(query);
-            AuthenticationResponse response = new(
-                result.User.Id,
-                result.User.FirstName,
-                result.User.LastName, 
-                result.User.Email, 
-                result.Token
-            );
+            var response = mapper.Map<AuthenticationResponse>(result);
             return Results.Ok(response);
         });
     }
