@@ -1,4 +1,5 @@
 ﻿using CleanDDDinner.Application.Error;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace CleanDDDinner.Api.Endpoints;
@@ -10,32 +11,55 @@ public static class ErrorEndpoints
         app.Map("/error", async context =>
         {
             var pds = context.RequestServices.GetRequiredService<IProblemDetailsService>();
-            var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-            var (statusCode, msg) = exception switch
-            {
-                IServiceException serviceException => ((int)serviceException.StatusCode, serviceException.ErrorMessage),
-                _ => (StatusCodes.Status500InternalServerError, "An unhandled error occurred.")
-            };
-
-            ProblemDetailsContext problemContext = new()
-            {
-                HttpContext = context,
-                Exception = exception,
-                ProblemDetails = new()
-                {
-                    Status = statusCode,
-                    Title = msg,
-                    Extensions = new Dictionary<string, object?>
-                    {
-                        { "inner", exception?.InnerException }
-                    }
-                }
-            };
+            var problemContext = ProblemDetailsContext(context);
 
             if (!await pds.TryWriteAsync(problemContext))
             {
                 await context.Response.WriteAsync("Fallback: An error occurred.");
             }
         });
+    }
+
+    private static ProblemDetailsContext ProblemDetailsContext(HttpContext context)
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        var (statusCode, msg) = exception switch
+        {
+            IServiceException serviceException => ((int)serviceException.StatusCode, serviceException.ErrorMessage),
+            ValidationException validationException => (StatusCodes.Status400BadRequest, validationException.Message),
+            _ => (StatusCodes.Status500InternalServerError, "An unhandled error occurred.")
+        };
+
+        ProblemDetailsContext problemContext = new()
+        {
+            HttpContext = context,
+            Exception = exception,
+            ProblemDetails = new()
+            {
+                Status = statusCode,
+                Title = msg,
+                Extensions = ValidationExceptionAnswer(exception),
+            }
+        };
+        return problemContext;
+    }
+
+    private static Dictionary<string, object?> ValidationExceptionAnswer(Exception? exception)
+    {
+        Dictionary<string, object?> extension = new();
+        if (exception is null)
+        {
+            return extension;
+        }
+
+        if (exception is ValidationException validation)
+        {
+            foreach (var error in validation.Errors)
+            {
+                extension[error.PropertyName] = error.ErrorMessage;
+            }
+        }
+
+        return extension;
     }
 }

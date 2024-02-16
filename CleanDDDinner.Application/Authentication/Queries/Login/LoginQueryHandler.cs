@@ -1,4 +1,5 @@
 ﻿using CleanDDDinner.Application.Authentication.Common;
+using CleanDDDinner.Application.Error;
 using CleanDDDinner.Application.Interfaces.Authentication;
 using CleanDDDinner.Application.Interfaces.Persistence;
 using MediatR;
@@ -12,12 +13,12 @@ public class LoginQueryHandler(IJwtTokenGenerator jwtTokenGen, IUserRepository u
     {
         if (userRepo.GetUserByEmail(query.Email) is not {} user)
         {
-            throw new Exception("User with given email does not exists.");
+            throw new UserWithEmailNotExistsException();
         }
 
         if (user.Password != query.Password)
         {
-            throw new Exception("Invalid password.");
+            throw new InvalidPasswordException();
         }
 
         var token = jwtTokenGen.GenerateToken(user);
