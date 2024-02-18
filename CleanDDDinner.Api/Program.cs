@@ -13,6 +13,8 @@ builder.Services
 var app = builder.Build();
 
 app.UseExceptionHandler("/error");
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
@@ -24,5 +26,6 @@ app.UseHttpsRedirection();
 
 app.MapErrorEndpoints();
 app.MapAuthenticationEndpoints();
+app.MapDinnersEndpoints();
 
 app.Run();
