@@ -1,4 +1,4 @@
-﻿using CleanDDDinner.Domain.Entities;
+﻿using CleanDDDinner.Domain.User;
 
 namespace CleanDDDinner.Application.Interfaces.Persistence;
 

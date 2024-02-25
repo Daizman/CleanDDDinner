@@ -1,10 +1,38 @@
-﻿namespace CleanDDDinner.Domain.Entities;
+﻿using CleanDDDinner.Domain.Common.Models;
+using CleanDDDinner.Domain.User.ValueObjects;
 
-public class User
+namespace CleanDDDinner.Domain.User;
+
+public class User : AggregateRoot<UserId>
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
+    public string FirstName { get; }
+    public string LastName { get; }
+    public string Email { get; }
+    public string Password { get; }
+    public DateTime CreatedDateTime { get; }
+    public DateTime UpdatedDateTime { get; }
+
+    private User(
+        UserId id,
+        string firstName,
+        string lastName,
+        string email,
+        string password,
+        DateTime createdDateTime,
+        DateTime updatedDateTime
+    ) : base(id)
+        => (FirstName, LastName, Email, Password, CreatedDateTime, UpdatedDateTime) = (firstName, lastName, email,
+            password, createdDateTime, updatedDateTime);
+
+    public static User Create(string firstName, string lastName, string email, string password)
+    {
+        return new(
+            UserId.CreateUnique(),
+            firstName,
+            lastName,
+            email,
+            password,
+            DateTime.UtcNow,
+            DateTime.UtcNow);
+    }
 }

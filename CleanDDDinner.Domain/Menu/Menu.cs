@@ -1,4 +1,5 @@
 ﻿using CleanDDDinner.Domain.Common.Models;
+using CleanDDDinner.Domain.Common.ValueObjects;
 using CleanDDDinner.Domain.Dinner.ValueObjects;
 using CleanDDDinner.Domain.Host.ValueObjects;
 using CleanDDDinner.Domain.Menu.Entities;
@@ -14,7 +15,7 @@ public sealed class Menu : AggregateRoot<MenuId>
     private readonly List<MenuReviewId> _menuReviewIds = new();
     public string Name { get; }
     public string Description { get; }
-    public float AverageRating { get; }
+    public AverageRating AverageRating { get; }
     public HostId HostId { get; } 
     public IReadOnlyList<MenuSection> Sections => _sections.AsReadOnly();
     public IReadOnlyList<DinnerId> DinnerIds => _dinnerIds.AsReadOnly();

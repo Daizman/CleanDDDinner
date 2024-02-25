@@ -1,5 +1,5 @@
 ﻿using CleanDDDinner.Application.Interfaces.Persistence;
-using CleanDDDinner.Domain.Entities;
+using CleanDDDinner.Domain.User;
 
 namespace CleanDDDinner.Infrastructure.Persistence;
 

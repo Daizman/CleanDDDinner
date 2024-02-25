@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using CleanDDDinner.Application.Interfaces.Authentication;
 using CleanDDDinner.Application.Interfaces.Services;
-using CleanDDDinner.Domain.Entities;
+using CleanDDDinner.Domain.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

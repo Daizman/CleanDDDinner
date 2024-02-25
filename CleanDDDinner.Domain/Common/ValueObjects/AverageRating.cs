@@ -10,7 +10,7 @@ public sealed class AverageRating : ValueObject
     private AverageRating(double value, int numRatings)
         => (Value, NumRatings) = (value, numRatings);
 
-    public static AverageRating CreateNew(double rating = 0, int numRatings = 0)
+    public static AverageRating Create(double rating = 0, int numRatings = 0)
         => new(rating, numRatings);
 
     public void AddNewRating(Rating rating)

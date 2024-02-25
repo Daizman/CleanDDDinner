@@ -2,7 +2,7 @@
 using CleanDDDinner.Application.Error;
 using CleanDDDinner.Application.Interfaces.Authentication;
 using CleanDDDinner.Application.Interfaces.Persistence;
-using CleanDDDinner.Domain.Entities;
+using CleanDDDinner.Domain.User;
 using MediatR;
 
 namespace CleanDDDinner.Application.Authentication.Commands.Register;
@@ -17,13 +17,7 @@ public class RegisterCommandHandler(IJwtTokenGenerator jwtTokenGen, IUserReposit
             throw new DuplicateEmailException();
         }
 
-        User user = new()
-        {
-            FirstName = command.FirstName,
-            LastName = command.LastName,
-            Email = command.Email,
-            Password = command.Password
-        };
+        User user = User.Create(command.FirstName, command.LastName, command.Email, command.Password);
         userRepo.AddUser(user);
         var token = jwtTokenGen.GenerateToken(user);
         return Task.FromResult(new AuthenticationResult(user, token));
