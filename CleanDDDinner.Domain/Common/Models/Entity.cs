@@ -1,8 +1,9 @@
 ﻿namespace CleanDDDinner.Domain.Common.Models;
 
-public abstract class Entity<TId> : IEquatable<Entity<TId>> where TId: notnull
+public abstract class Entity<TId> : IEquatable<Entity<TId>>
+    where TId : notnull
 {
-    public TId Id { get; private init; }
+    public TId Id { get; }
 
     protected Entity(TId id)
     {
@@ -28,7 +29,7 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>> where TId: notnull
     {
         return Equals((object?)other);
     }
-    
+
     public override int GetHashCode()
     {
         return Id.GetHashCode();

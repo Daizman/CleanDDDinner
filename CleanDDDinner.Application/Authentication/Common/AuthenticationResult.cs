@@ -1,8 +1,7 @@
-﻿using CleanDDDinner.Domain.User;
+﻿using CleanDDDinner.Domain.UserAggregate;
 
 namespace CleanDDDinner.Application.Authentication.Common;
 
 public record AuthenticationResult(
     User User,
-    string Token    
-);
+    string Token);

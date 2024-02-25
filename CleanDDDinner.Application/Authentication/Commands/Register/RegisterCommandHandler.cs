@@ -2,7 +2,7 @@
 using CleanDDDinner.Application.Error;
 using CleanDDDinner.Application.Interfaces.Authentication;
 using CleanDDDinner.Application.Interfaces.Persistence;
-using CleanDDDinner.Domain.User;
+using CleanDDDinner.Domain.UserAggregate;
 using MediatR;
 
 namespace CleanDDDinner.Application.Authentication.Commands.Register;

@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using CleanDDDinner.Application.Interfaces.Authentication;
 using CleanDDDinner.Application.Interfaces.Services;
-using CleanDDDinner.Domain.User;
+using CleanDDDinner.Domain.UserAggregate;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,7 +19,7 @@ public class JwtTokenGenerator(IDateTimeProvider dtProvider, IOptions<JwtSetting
         SigningCredentials signingCredentials = new(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret)),
             SecurityAlgorithms.HmacSha256);
-        
+
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -32,7 +32,7 @@ public class JwtTokenGenerator(IDateTimeProvider dtProvider, IOptions<JwtSetting
             issuer: _settings.Issuer,
             audience: _settings.Audience,
             expires: dtProvider.UtcNow.AddMinutes(_settings.ExpiryMinutes),
-            claims: claims, 
+            claims: claims,
             signingCredentials: signingCredentials
         );
 

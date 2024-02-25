@@ -1,4 +1,4 @@
-﻿using CleanDDDinner.Domain.User;
+﻿using CleanDDDinner.Domain.UserAggregate;
 
 namespace CleanDDDinner.Application.Interfaces.Authentication;
 
