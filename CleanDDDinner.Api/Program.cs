@@ -23,9 +23,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.MapErrorEndpoints();
-app.MapAuthenticationEndpoints();
-app.MapDinnersEndpoints();
+app.UseEndpoints();
 
 app.Run();

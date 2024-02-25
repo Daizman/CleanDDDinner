@@ -6,7 +6,7 @@ public static class DinnersEndpoints
     {
         var dinnersApi = app.MapGroup("/api/dinners").RequireAuthorization();
 
-        dinnersApi.MapGet("", () =>
+        dinnersApi.MapGet(string.Empty, () =>
         {
             return Results.Ok(Array.Empty<string>());
         })

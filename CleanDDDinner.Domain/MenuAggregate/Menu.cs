@@ -10,13 +10,13 @@ namespace CleanDDDinner.Domain.MenuAggregate;
 
 public sealed class Menu : AggregateRoot<MenuId>
 {
-    private readonly List<MenuSection> _sections = new();
+    private readonly List<MenuSection> _sections;
     private readonly List<DinnerId> _dinnerIds = new();
     private readonly List<MenuReviewId> _menuReviewIds = new();
     public string Name { get; }
     public string Description { get; }
     public AverageRating AverageRating { get; }
-    public HostId HostId { get; } 
+    public HostId HostId { get; }
     public IReadOnlyList<MenuSection> Sections => _sections.AsReadOnly();
     public IReadOnlyList<DinnerId> DinnerIds => _dinnerIds.AsReadOnly();
     public IReadOnlyList<MenuReviewId> MenuReviewIds => _menuReviewIds.AsReadOnly();
@@ -29,18 +29,19 @@ public sealed class Menu : AggregateRoot<MenuId>
         string description,
         HostId hostId,
         DateTime createdDateTime,
-        DateTime updatedDateTime)
+        DateTime updatedDateTime,
+        List<MenuSection> sections)
         : base(id)
-        => (Name, Description, HostId, CreatedDateTime, UpdatedDateTime) =
-            (name, description, hostId, createdDateTime, updatedDateTime);
+        => (Name, Description, HostId, CreatedDateTime, UpdatedDateTime, _sections) =
+            (name, description, hostId, createdDateTime, updatedDateTime, sections);
 
-    public static Menu Create(string name, string description, HostId hostId)
+    public static Menu Create(string name, string description, HostId hostId, List<MenuSection>? sections = null)
         => new(
             MenuId.CreateUnique(),
             name,
             description,
             hostId,
             DateTime.UtcNow,
-            DateTime.UtcNow
-        );
+            DateTime.UtcNow,
+            sections ?? new());
 }

@@ -27,7 +27,7 @@ public static class ErrorEndpoints
         {
             IServiceException serviceException => ((int)serviceException.StatusCode, serviceException.ErrorMessage),
             ValidationException validationException => (StatusCodes.Status400BadRequest, validationException.Message),
-            _ => (StatusCodes.Status500InternalServerError, "An unhandled error occurred.")
+            _ => (StatusCodes.Status500InternalServerError, "An unhandled error occurred."),
         };
 
         ProblemDetailsContext problemContext = new()
@@ -39,7 +39,7 @@ public static class ErrorEndpoints
                 Status = statusCode,
                 Title = msg,
                 Extensions = ValidationExceptionAnswer(exception),
-            }
+            },
         };
         return problemContext;
     }

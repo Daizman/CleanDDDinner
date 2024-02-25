@@ -11,7 +11,7 @@ public class AuthenticationMappingProfile : Profile
     public AuthenticationMappingProfile()
     {
         CreateMap<AuthenticationResult, AuthenticationResponse>()
-            .ForCtorParam("Id", expression => expression.MapFrom(result => result.User.Id))
+            .ForCtorParam("Id", expression => expression.MapFrom(result => result.User.Id.Value))
             .ForCtorParam("FirstName", expression => expression.MapFrom(result => result.User.FirstName))
             .ForCtorParam("LastName", expression => expression.MapFrom(result => result.User.LastName))
             .ForCtorParam("Email", expression => expression.MapFrom(result => result.User.Email))

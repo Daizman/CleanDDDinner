@@ -15,17 +15,16 @@ public static class AuthenticationEndpoints
         authenticationApi.MapPost("/register", async (
             ISender sender,
             IMapper mapper,
-            RegisterRequest request
-            ) =>
+            RegisterRequest request) =>
         {
             var command = mapper.Map<RegisterCommand>(request);
             var result = await sender.Send(command);
             var response = mapper.Map<AuthenticationResponse>(result);
             return Results.Ok(response);
         });
-        
+
         authenticationApi.MapPost("/login", async (
-            ISender sender, 
+            ISender sender,
             IMapper mapper,
             LoginRequest request) =>
         {

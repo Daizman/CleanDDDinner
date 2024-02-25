@@ -14,7 +14,7 @@ public static class DependencyInjection
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
-            options.AddSecurityDefinition("Authorization", new ()
+            options.AddSecurityDefinition("Authorization", new()
             {
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
@@ -23,7 +23,7 @@ public static class DependencyInjection
                 Name = "Authorization",
                 Description = "Authorization token",
             });
-            
+
             options.AddSecurityRequirement(new()
             {
                 {
@@ -33,13 +33,13 @@ public static class DependencyInjection
                         {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Authorization",
-                        }
+                        },
                     },
                     new string[] { }
-                }
+                },
             });
-            
-            options.CustomOperationIds(description => 
+
+            options.CustomOperationIds(description =>
                 description.TryGetMethodInfo(out MethodInfo methodInfo)
                     ? methodInfo.Name
                     : null);
